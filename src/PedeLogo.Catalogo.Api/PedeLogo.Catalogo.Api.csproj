@@ -2,12 +2,18 @@
 
     <PropertyGroup>
       <TargetFramework>netcoreapp3.1</TargetFramework>
+      <UserSecretsId>9ba345b1-7ee7-4e12-99d5-925aed3bad75</UserSecretsId>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+      <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MongoDB.Bson" Version="2.10.4" />
-      <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+      <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+      <PackageReference Include="MongoDB.Bson" Version="2.11.1" />
+      <PackageReference Include="MongoDB.Driver" Version="2.11.1" />
       <PackageReference Include="prometheus-net.AspNetCore" Version="3.6.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     </ItemGroup>
 
 

@@ -58,6 +58,7 @@ namespace PedeLogo.Catalogo.Api.Controllers
             this._collection.FindOneAndReplace(obj => obj.Id.Equals(produto.Id), produto);
         }
         
+        [HttpDelete]
         public void Delete(string id)
         {
             this._collection.FindOneAndDelete(obj => obj.Id.Equals(id));

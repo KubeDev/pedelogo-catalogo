@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using Prometheus;
+using Microsoft.OpenApi.Models;
 
 namespace PedeLogo.Catalogo.Api
 {
@@ -24,6 +25,16 @@ namespace PedeLogo.Catalogo.Api
                 .GetDatabase((this.Configuration.GetSection("Mongo:DataBase").Get<string>())));
             
             services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API para cadastro de Produtos",
+                    Description = "API para cadastro de Produtos"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +44,13 @@ namespace PedeLogo.Catalogo.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catálogo de produtos API");
+            });
 
             app.UseRouting();
             app.UseHttpMetrics();

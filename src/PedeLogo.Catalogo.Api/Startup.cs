@@ -21,9 +21,10 @@ namespace PedeLogo.Catalogo.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IMongoDatabase>(sp => new MongoClient(this.Configuration.GetSection("Mongo:ConnectionString").Get<string>())
+            var connectionString = $"mongodb://{this.Configuration.GetSection("Mongo:User").Get<string>()}:{this.Configuration.GetSection("Mongo:Password").Get<string>()}@{this.Configuration.GetSection("Mongo:Host").Get<string>()}:{this.Configuration.GetSection("Mongo:Port").Get<string>()}/{this.Configuration.GetSection("Mongo:DataBase").Get<string>()}";
+            services.AddScoped<IMongoDatabase>(sp => new MongoClient(connectionString)
                 .GetDatabase((this.Configuration.GetSection("Mongo:DataBase").Get<string>())));
-            
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -59,7 +60,7 @@ namespace PedeLogo.Catalogo.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers(); 
+                endpoints.MapControllers();
                 endpoints.MapMetrics();
             });
         }

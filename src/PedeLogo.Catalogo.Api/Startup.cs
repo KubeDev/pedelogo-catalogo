@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using Prometheus;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using PedeLogo.Catalogo.Api.Config;
 
 namespace PedeLogo.Catalogo.Api
 {
@@ -26,6 +28,20 @@ namespace PedeLogo.Catalogo.Api
                 .GetDatabase((this.Configuration.GetSection("Mongo:DataBase").Get<string>())));
 
             services.AddControllers();
+
+            services.AddHealthChecks()
+                 .AddCheck("Health Test", () =>
+                 {
+                     if (ConfigManager.IsUnHealth())
+                     {
+                         return HealthCheckResult.Unhealthy();
+                     }
+                     else
+                     {
+                         return HealthCheckResult.Healthy();
+                     }                     
+                 }
+                 , tags: new[] { "Health" });
 
             services.AddSwaggerGen(c =>
             {
@@ -54,9 +70,13 @@ namespace PedeLogo.Catalogo.Api
             });
 
             app.UseRouting();
-            app.UseHttpMetrics();
 
-            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+            });
+
+            app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
             {

@@ -20,18 +20,5 @@ namespace PedeLogo.Catalogo.Api.Controllers
             ConfigManager.SetUnHealth();
             return Ok();
         }
-
-        [HttpGet("unread")]
-        public IActionResult GetUnRead()
-        {
-            if (ConfigManager.IsRead())
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
     }
 }

@@ -8,6 +8,7 @@ using Prometheus;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using PedeLogo.Catalogo.Api.Config;
+using Microsoft.AspNetCore.Http;
 
 namespace PedeLogo.Catalogo.Api
 {
@@ -39,7 +40,7 @@ namespace PedeLogo.Catalogo.Api
                      else
                      {
                          return HealthCheckResult.Healthy();
-                     }                     
+                     }
                  }
                  , tags: new[] { "Health" });
 
@@ -82,6 +83,19 @@ namespace PedeLogo.Catalogo.Api
             {
                 endpoints.MapControllers();
                 endpoints.MapMetrics();
+                endpoints.MapGet("/read", async context =>
+                {
+                    if (ConfigManager.IsRead())
+                    {
+                        context.Response.StatusCode = 200;
+                        await context.Response.WriteAsync("");
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 503;
+                        await context.Response.WriteAsync("");
+                    }
+                });
             });
         }
     }

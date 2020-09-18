@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using PedeLogo.Catalogo.Api.Config;
 using Microsoft.AspNetCore.Http;
+using PedeLogo.Catalogo.Api.Middlewares;
 
 namespace PedeLogo.Catalogo.Api
 {
@@ -69,6 +70,8 @@ namespace PedeLogo.Catalogo.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catálogo de produtos API");
             });
+
+            app.UseHealthMiddleware();
 
             app.UseRouting();
 

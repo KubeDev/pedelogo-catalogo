@@ -24,12 +24,15 @@ namespace PedeLogo.Catalogo.Api.Controllers
         [HttpGet]
         public IEnumerable<Produto> Get()
         {
-            return this._collection.Find(new BsonDocument()).ToList();
+            var resultado = this._collection.Find(new BsonDocument()).ToList();
+            this._logger.LogInformation("Entrou no Get All");
+            return resultado;
         }
 
         [HttpGet("{id}", Name = "GetProduto")]
         public Produto Get(string id)
         {
+            this._logger.LogInformation("Entrou no Get By Id");
             ObjectId objID;
             if (!ObjectId.TryParse(id, out objID))
             {
@@ -42,6 +45,7 @@ namespace PedeLogo.Catalogo.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Produto produto)
         {
+            this._logger.LogInformation("Entrou no Post");
             this._collection.InsertOne(produto);
             return Ok();
         }
@@ -49,6 +53,7 @@ namespace PedeLogo.Catalogo.Api.Controllers
         [HttpPut("{id}")]
         public void Put([FromRoute] string id, [FromBody] Produto produto)
         {
+            this._logger.LogInformation("Entrou no Put");
             ObjectId objID;
             if (!ObjectId.TryParse(id, out objID))
             {
@@ -61,6 +66,7 @@ namespace PedeLogo.Catalogo.Api.Controllers
         [HttpDelete]
         public void Delete(string id)
         {
+            this._logger.LogInformation("Entrou no Delete");
             this._collection.FindOneAndDelete(obj => obj.Id.Equals(id));
         }
     }

@@ -75,12 +75,12 @@ namespace PedeLogo.Catalogo.Api
 
             app.UseRouting();
 
+            app.UseHttpMetrics();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
             });
-
-            app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
             {
